@@ -2,7 +2,7 @@ import {ProdEnvironment} from './prod.env';
 import {DevEnvironment} from './dev.env';
 
 export interface Environment {
-    db_url: string
+    db_url: string,
 }
 
 export function getEnvironmentVariables() {
