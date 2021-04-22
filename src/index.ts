@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose';
+import { getEnvironmentVariables } from './environments/env';
 
 let app: express.Application = express();
 
@@ -7,10 +8,11 @@ app.listen(5000, ()=>{
     console.log('server is running at port 2611')
 });
 
-mongoose.connect('mongodb+srv://mrunal:mrunal@mongodb.houq9.mongodb.net/mangodb?retryWrites=true&w=majority',{ useNewUrlParser: true , useUnifiedTopology: true})
+mongoose.connect(getEnvironmentVariables().db_url,{ useNewUrlParser: true , useUnifiedTopology: true})
+
 
       .then(()=> {
-          console.log('mongodb is connected');
+          console.log('Mongodb is connected');
       }) 
 
 app.get('api/user/login', (req: any,res,next) => {
