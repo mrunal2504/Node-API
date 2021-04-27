@@ -1,4 +1,5 @@
 import User from '../models/User';
+import { NodeMailer } from '../utils/NodeMailer';
 import {Utils} from '../utils/Utils';
 
 export class UserController {
@@ -6,22 +7,29 @@ export class UserController {
         const email = req.body.email;
         const password = req.body.password;
         const username = req.body.username;
-        const data = {
-            email: email,
-            password: password,
-            username: username,
-            verification_token: Utils.generateVerificationToken(),
-            verification_token_time: Date.now() + new Utils().MAX_TOKEN_TIME,
-            created_at: new Date(),
-            updated_at: new Date()
-        };
-        try {
-            let user = await new User(data).save();
-            // Send Verification Email
-            res.send(user);
-        } catch (e) {
-            next(e);
-        }
+        NodeMailer.sendEmail
+        ({to: ['mrunaldhuri1999@gmail.com'], subject:'test Node-API', html:`<h1>Hello from Node-API</h1>`}) 
+        .then(() =>{
+            res.send('success');
+        }).catch(err => {
+            next(err);
+        })
+        // const data = {
+        //     email: email,
+        //     password: password,
+        //     username: username,
+        //     verification_token: Utils.generateVerificationToken(),
+        //     verification_token_time: Date.now() + new Utils().MAX_TOKEN_TIME,
+        //     created_at: new Date(),
+        //     updated_at: new Date()
+        // };
+        // try {
+        //     let user = await new User(data).save();
+        //     // Send Verification Email
+        //     res.send(user);
+        // } catch (e) {
+        //     next(e);
+        // }
     }
 
     static async verify(req, res, next) {
